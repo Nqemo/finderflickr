@@ -175,7 +175,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         
-        JeroenG\Flickr\FlickrServiceProvider::class
     ],
 
     /*
@@ -230,6 +229,15 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+    ],
+
+    'flickr' => [
+        'url' => env('FLICKR_URL'),
+        'key' => env('FLICKR_KEY'),
+        'methods'=> [
+            'random' => 'flickr.photos.getRecent',
+            'search' => 'flickr.photos.search',
+        ],
     ],
 
 ];

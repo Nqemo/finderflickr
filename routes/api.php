@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// List Photos
+Route::get('photos', 'PhotoController@index');
+
+// List Photos by tag
+Route::get('photos/{tag}', 'PhotoController@show');
