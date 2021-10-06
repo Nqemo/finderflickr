@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('photos', 'PhotoController@index');
 
 // List Photos by tag
-Route::get('photos/{tag}', 'PhotoController@show');
+Route::get('photos/{tag}', 'PhotoController@all');

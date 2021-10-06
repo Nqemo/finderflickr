@@ -23,17 +23,24 @@ class PhotoController extends Controller
         $flickr = Config::get('app.flickr');
         
         $params = 'per_page=5&page=1&format=json&nojsoncallback=1';
-        // $fakeflickUrl = 'https://www.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=4fae6b45c7e8b26635fd81f9009fce0b&per_page=5&page=1&format=json&nojsoncallback=1';
         
         $request = $flickr['url'].'?method='.$flickr['methods']['random'].'&api_key='.$flickr['key'].'&'.$params;
 
         $response = Http::get($request);
 
         $statusCode = $response->status();
-
+        
         $responseBody = json_decode($response->getBody(), true);
         
-        dd($responseBody);
+        // TODO: pending bug handling
+
+        // if ($responseBody['stat'] == 'ok')
+        // {
+            return $responseBody;
+            
+        // }
+        
+        
     }
 
     /**
@@ -53,16 +60,14 @@ class PhotoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function all(Request $request)
     {
         // params request
         $tagFind = '&tags='.$request->route('tag');
-        // $flickUrl = 'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=4fae6b45c7e8b26635fd81f9009fce0b' .$tagFind.'&per_page=5&page=1&format=json&nojsoncallback=1';
         
         $flickr = Config::get('app.flickr');
         
         $params = 'per_page=5&page=1&format=json&nojsoncallback=1';
-        // $fakeflickUrl = 'https://www.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=4fae6b45c7e8b26635fd81f9009fce0b&per_page=5&page=1&format=json&nojsoncallback=1';
         
         $request = $flickr['url'].'?method='.$flickr['methods']['search'].'&api_key='.$flickr['key'].$tagFind.'&'.$params;
 
@@ -72,7 +77,9 @@ class PhotoController extends Controller
 
         $responseBody = json_decode($response->getBody(), true);
         
-        dd($responseBody);
+        //TODO: pending bug handling
+
+        return $responseBody;
     }
 
     
