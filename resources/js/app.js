@@ -20,10 +20,6 @@ window.Vue = require('vue').default
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component(
-  'example-component',
-  require('./components/ExampleComponent.vue').default
-)
-Vue.component(
   'photo-component',
   require('./components/PhotoComponent.vue').default
 )
@@ -34,6 +30,10 @@ Vue.component(
 Vue.component(
   'container-component',
   require('./components/ContainerComponent.vue').default
+)
+Vue.component(
+  'loading-component',
+  require('./components/LoadingComponent.vue').default
 )
 
 /**
