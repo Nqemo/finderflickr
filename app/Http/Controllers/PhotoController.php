@@ -17,15 +17,13 @@ class PhotoController extends Controller
     {
         $flickr = Config::get('app.flickr');
         
-        $params = 'per_page='.env('PER_PAGE').'&page=1&format=json&nojsoncallback=1';
+        $params = '&format=json&nojsoncallback=1';
         
-        $request = $flickr['url'].'?method='.$flickr['methods']['random'].'&api_key='.$flickr['key'].'&'.$params;
-
+        $request = $flickr['url'].'?'.$params;
+        
         $response = Http::get($request);
-
-        $statusCode = $response->status();
         
-        $responseBody = json_decode($response->getBody(), true);
+        $responseBody = json_decode($response, true);
         
         // TODO: pending bug handling
 
@@ -53,20 +51,18 @@ class PhotoController extends Controller
     public function all(Request $request)
     {
         // params request
-        $tagFind = '&tags='.$request->route('tag');
+        $tagFind = 'tags='.$request->route('tag').'&tagmode=any';
         
         $flickr = Config::get('app.flickr');
         
-        $params = 'per_page='.env('PER_PAGE').'&page=1&format=json&nojsoncallback=1';
+        $params = '&format=json&nojsoncallback=1';
         
-        $request = $flickr['url'].'?method='.$flickr['methods']['search'].'&api_key='.$flickr['key'].$tagFind.'&'.$params;
-
+        $request = $flickr['url'].'?'.$tagFind.$params;
+        
         $response = Http::get($request);
-
-        $statusCode = $response->status();
-
-        $responseBody = json_decode($response->getBody(), true);
         
+        $responseBody = json_decode($response, true);
+
         //TODO: pending bug handling
 
         return $responseBody;

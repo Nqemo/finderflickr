@@ -20,7 +20,7 @@
       <div
         v-for="image in images"
         :key="image.id"
-        class="w-full lg:w-1/3 border border-white-mondo rounded-2xl"
+        class="w-full lg:w-1/4 border border-white-mondo rounded-2xl"
       >
         <photo-component :image="image"></photo-component>
       </div>
@@ -52,20 +52,24 @@ export default {
       axios
         .get(api)
         .then((response) => {
+          console.log(response)
           this.isLoading = false
+          this.images = response.items
 
           // TODO: error handler
-          switch (response.data.stat) {
-            case 'fail':
-              console.log(`problem with API. ${response.data.message}`)
+          switch (response.status) {
+            case 200:
+              this.images = response.data.items
               break
 
             default:
-              this.images = response.data.photos.photo
+              console.log(`problem with API. ${response.data.message}`)
               break
           }
         })
-        .catch((error) => {})
+        .catch((error) => {
+          console.error(error)
+        })
     },
   },
 }
