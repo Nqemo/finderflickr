@@ -6,11 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Config;
 
-// use App\Http\Requests;
-// use App\Photo;
-// use App\Http\Resources\Photo as PhotoResource;
-// use JeroenG\Flickr\FlickrLaravelFacade as Flickr;
-
 class PhotoController extends Controller
 {
     /**
@@ -22,7 +17,7 @@ class PhotoController extends Controller
     {
         $flickr = Config::get('app.flickr');
         
-        $params = 'per_page=5&page=1&format=json&nojsoncallback=1';
+        $params = 'per_page='.env('PER_PAGE').'&page=1&format=json&nojsoncallback=1';
         
         $request = $flickr['url'].'?method='.$flickr['methods']['random'].'&api_key='.$flickr['key'].'&'.$params;
 
@@ -34,12 +29,7 @@ class PhotoController extends Controller
         
         // TODO: pending bug handling
 
-        // if ($responseBody['stat'] == 'ok')
-        // {
-            return $responseBody;
-            
-        // }
-        
+        return $responseBody;
         
     }
 
@@ -67,7 +57,7 @@ class PhotoController extends Controller
         
         $flickr = Config::get('app.flickr');
         
-        $params = 'per_page=5&page=1&format=json&nojsoncallback=1';
+        $params = 'per_page='.env('PER_PAGE').'&page=1&format=json&nojsoncallback=1';
         
         $request = $flickr['url'].'?method='.$flickr['methods']['search'].'&api_key='.$flickr['key'].$tagFind.'&'.$params;
 
