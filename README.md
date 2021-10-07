@@ -2,14 +2,9 @@
 
 Prueba de aplicación web sencilla que lea datos de las fuentes públicas de Flickr y muestre las imágenes de la página al usuario.
 
-El backend debe ser creado con Laravel 8 y frontend desarrollado con Vue 2 o 3 (preferentemente 3, pero el 2 sigue siendo stable release).
-
 Al cargar la página, las aplicaciones deben cargar las imágenes de feeds públicos en una vista de lista o cuadrícula.
+
 El usuario debe poder ingresar una palabra clave en un cuadro de búsqueda y hacer clic en un botón de búsqueda y la aplicación debe devolver imágenes con las etiquetas relevantes.
-
-Se pueden utilizar bibliotecas de terceros de su elección si es necesario.
-
-**Bonus**: Se puede utilizar TailwindCSS para el mockup de las vistas
 
 ## Arranque 🚀
 
@@ -18,7 +13,8 @@ _Instrucciones básicas:._
 1. [Clona o descarga](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) el codigo fuente de la aplicación a tu ordenador.
 2. Instala Node.js si no lo tienes instalado. [Pagina de descarga](https://nodejs.org/en/download/) or [via package manager](https://nodejs.org/en/download/package-manager/).
 3. Muevete a la carpeta del directorio.
-4. Ejecuta `npm install && npm run dev` para coger todas las dependencias. Puede ser que esta operación requiera de `sudo`.
+4. Ejecuta `composer install` para coger todas las dependencias laravel
+5. Ejecuta `npm install && npm run dev` para coger todas las dependencias vue. Puede ser que esta operación requiera de `sudo`.
 
 ```
 npm install && npm run dev
@@ -38,7 +34,9 @@ yarn install yarn dev
 
 - node + npm
 
-Configura apache o nginx para exponer la web. Este es un ejemplo de configuración para apache:
+Configura apache o nginx para exponer la web.
+
+_Este es un ejemplo de configuración para apache_:
 
 ```
 <VirtualHost *:443>
@@ -69,13 +67,29 @@ Configura apache o nginx para exponer la web. Este es un ejemplo de configuraci�
 
 ## Despliegue 📦
 
+Copiar el archivo .env.example a .env
+
+```
+cp .env.example .env
+```
+
 Añadir al archivo .env los siguientes parametros:
 
 ```
 FLICKR_URL=https://www.flickr.com/services/feeds/photos_public.gne
 ```
 
-**Ya estaría desplegado el proyecto**
+Genera la app key de laravel:
+
+```
+php artisan key:generate
+```
+
+y con esto
+
+**`Ya estaría desplegado el proyecto`**
+
+---
 
 ## Construido con 🛠️
 
