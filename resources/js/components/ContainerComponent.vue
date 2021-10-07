@@ -1,28 +1,44 @@
 <template>
   <div>
-    <span class="text-xs text-gray-500">{{ searchingfor }}</span>
-    <search-component @gettag="getImages"></search-component>
-    <div class="flex">
+    <!-- block loading -->
+    <loading-component :active.sync="isLoading" />
+    <!-- end block -->
+
+    <!-- block header -->
+    <div class="flex justify-between h-16 bg-green-mondo w-full">
+      <div class="m-2 text-3xl font-medium text-white-mondo flex-grow">
+        Mondo Flickr Search
+      </div>
+      <div class="m-2 flex flex-row flex-nowrap flex-grow-0">
+        <search-component @gettag="getImages"></search-component>
+      </div>
+    </div>
+    <!-- end block -->
+
+    <!-- block container -->
+    <div class="container m-4 flex flex-wrap mx-auto">
       <div
-        class="flex-row flex-wrap justify-around"
         v-for="image in images"
         :key="image.id"
+        class="w-full lg:w-1/3 border border-white-mondo rounded-2xl"
       >
         <photo-component :image="image"></photo-component>
       </div>
     </div>
+    <!-- end block -->
   </div>
 </template>
 
 <script>
 import PhotoComponent from './PhotoComponent.vue'
 import SearchComponent from './SearchComponent.vue'
+import LoadingComponent from './LoadingComponent.vue'
+
 export default {
-  components: { SearchComponent, PhotoComponent },
+  components: { SearchComponent, PhotoComponent, LoadingComponent },
   data() {
     return {
       images: [],
-      searchingfor: null,
       isLoading: false,
     }
   },
@@ -31,13 +47,23 @@ export default {
   },
   methods: {
     getImages(objTag) {
+      this.isLoading = true
       const api = objTag ? `/api/photos/${objTag.tag}` : '/api/photos'
-      this.searchingfor = `searching for ${objTag.tag}`
       axios
         .get(api)
         .then((response) => {
-          this.isLoading = !this.isLoading
-          this.images = response.data.photos.photo
+          this.isLoading = false
+
+          // TODO: error handler
+          switch (response.data.stat) {
+            case 'fail':
+              console.log(`problem with API. ${response.data.message}`)
+              break
+
+            default:
+              this.images = response.data.photos.photo
+              break
+          }
         })
         .catch((error) => {})
     },
