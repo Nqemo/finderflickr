@@ -1,64 +1,94 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# FullStack Developer Test - Heymondo
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Prueba de aplicación web sencilla que lea datos de las fuentes públicas de Flickr y muestre las imágenes de la página al usuario.
 
-## About Laravel
+El backend debe ser creado con Laravel 8 y frontend desarrollado con Vue 2 o 3 (preferentemente 3, pero el 2 sigue siendo stable release).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Al cargar la página, las aplicaciones deben cargar las imágenes de feeds públicos en una vista de lista o cuadrícula.
+El usuario debe poder ingresar una palabra clave en un cuadro de búsqueda y hacer clic en un botón de búsqueda y la aplicación debe devolver imágenes con las etiquetas relevantes.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Se pueden utilizar bibliotecas de terceros de su elección si es necesario.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Bonus**: Se puede utilizar TailwindCSS para el mockup de las vistas
 
-## Learning Laravel
+## Arranque 🚀
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+_Instrucciones básicas:._
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. [Clona o descarga](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) el codigo fuente de la aplicación a tu ordenador.
+2. Instala Node.js si no lo tienes instalado. [Pagina de descarga](https://nodejs.org/en/download/) or [via package manager](https://nodejs.org/en/download/package-manager/).
+3. Muevete a la carpeta del directorio.
+4. Ejecuta `npm install && npm run dev` para coger todas las dependencias. Puede ser que esta operación requiera de `sudo`.
 
-## Laravel Sponsors
+```
+npm install && npm run dev
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+_o_
 
-### Premium Partners
+```
+yarn install yarn dev
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
+### Pre-requisitos 📋
 
-## Contributing
+- Servidor web (Apache o nginx)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- php 7.4
 
-## Code of Conduct
+- node + npm
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Configura apache o nginx para exponer la web. Este es un ejemplo de configuración para apache:
 
-## Security Vulnerabilities
+```
+<VirtualHost *:443>
+  DocumentRoot /var/www/finderflickr/public
+  ServerName finderflickr.local
+  #DirectoryIndex index.php index.html
+  ErrorLog /var/log/apache2/finderflickr-error_log
+  CustomLog "/var/log/apache2/finderflickr-access_log" "%h %l %u %t \"%r\" %s %b \"%{Referer}i\" \"%{User-agent}i\" \"[ORIGEN %{X-Forwarded-For}i]\""
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+   SSLEngine on
+   SSLCertificateFile /etc/apache2/certificate/finderflickr.crt
+   SSLCertificateKeyFile /etc/apache2/certificate/finderflickr.key
+  <FilesMatch "\.(cgi|shtml|phtml|php)$">
+    SSLOptions +StdEnvVars
+  </FilesMatch>
+  <Directory "/var/www/finderflickr/public">
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    SSLOptions +StdEnvVars
+  </Directory>
 
-## License
+  RewriteEngine On
+  RewriteCond %{REQUEST_METHOD} OPTIONS
+  RewriteRule ^(.*)$ [R=200,L]
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+</VirtualHost>
+```
+
+## Despliegue 📦
+
+Añadir al archivo .env los siguientes parametros:
+
+```
+FLICKR_URL=https://www.flickr.com/services/feeds/photos_public.gne
+```
+
+**Ya estaría desplegado el proyecto**
+
+## Construido con 🛠️
+
+- [Laravel](https://laravel.com) - El framework PHP
+- [Vue](https://vuejs.org) - El framework JS
+- [TailwindCSS](https://tailwindcss.com) - El framework CSS
+
+## Autor ✒️
+
+- **Nacho Quero** - [NqEmO](https://github.com/Nqemo)
+
+## Licencia 📄
+
+_privada_
+
+[Nacho](https://github.com/Nqemo) 😊

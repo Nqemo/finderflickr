@@ -52,7 +52,6 @@ export default {
       axios
         .get(api)
         .then((response) => {
-          console.log(response)
           this.isLoading = false
           this.images = response.items
 
